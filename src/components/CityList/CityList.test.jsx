@@ -12,7 +12,9 @@ const cities = [
 test('CityList renders', async () => {
   // AAA Arrange Act Assert
 
-  const { findAllByRole } = render(<CityList cities={cities} />);
+  const { findAllByRole } = render(
+    <CityList cities={cities} onClickCity={jest.fn()} />
+  );
 
   const items = await findAllByRole('listitem');
 

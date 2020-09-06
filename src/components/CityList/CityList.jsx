@@ -6,7 +6,7 @@ import Weather from './../Weather';
 
 // li: es un item (segun tag html, tiene el role "listitem")
 // renderCityAndCountry se va a convertir en una funcion que retorna otra funcion
-const renderCityAndCountry = (eventOnClickCity) => (cityAndCountry) => {
+const renderCityAndCountry = (eventOnClickCity, cityAndCountry) => {
   const { city, country } = cityAndCountry;
 
   return (
@@ -26,12 +26,10 @@ const renderCityAndCountry = (eventOnClickCity) => (cityAndCountry) => {
 // cities: es un array, y en cada item tiene que tenerla ciudad, pero ademas el country
 // ul: tag html para listas no ordenadas
 const CityList = ({ cities, onClickCity }) => {
-  console.log(onClickCity);
-
   return (
     <ul>
       {cities.map((cityAndCountry) =>
-        renderCityAndCountry(onClickCity)(cityAndCountry)
+        renderCityAndCountry(onClickCity, cityAndCountry)
       )}
     </ul>
   );
