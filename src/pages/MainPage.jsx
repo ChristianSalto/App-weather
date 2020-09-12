@@ -1,14 +1,28 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
+import CityList from './../components/CityList';
 
-const MainPage = (props) => {
+const cities = [
+  { city: 'Madrid', country: 'España' },
+  { city: 'Berlin', country: 'Alemania' },
+  { city: 'Bruselas', country: 'Belgica' },
+  { city: 'Paris', country: 'Francia' },
+];
+
+const MainPage = () => {
+  const history = useHistory();
+
+  const onClickHandler = () => {
+    // history.push permite alterar la URL por programacion
+    history.push('/city');
+  };
+
   return (
     <div>
-      <h1>MainPage</h1>
+      <h2>Lista de ciudades</h2>
+      <CityList cities={cities} onClickCity={onClickHandler} />
     </div>
   );
 };
-
-MainPage.propTypes = {};
 
 export default MainPage;
