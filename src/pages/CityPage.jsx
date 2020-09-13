@@ -60,22 +60,18 @@ const CityPage = (props) => {
   const forecastItemList = forecastItemListExample;
 
   return (
-    <Grid container justify="center">
-      <Grid item xs={12}>
+    <Grid container justify="space-around" direction="column" spacing={2}>
+      <Grid item container xs={12} justify="center" alignItems="flex-end">
         <CityInfo city={city} country={country} />
       </Grid>
-      <Grid container item xs={12}>
-        <Grid item xs={8}>
-          <Weather state={state} temperature={temperature} />
-        </Grid>
-        <Grid item xs={4}>
-          <WeatherDetails humidity={humidity} wind={wind} />
-        </Grid>
+      <Grid container item xs={12} justify="center">
+        <Weather state={state} temperature={temperature} />
+        <WeatherDetails humidity={humidity} wind={wind} />
       </Grid>
-      <Grid item>
+      <Grid item xs={12}>
         <ForecastChart data={data} />
       </Grid>
-      <Grid item>
+      <Grid item xs={12}>
         <Forecast forecastItemList={forecastItemList} />
       </Grid>
     </Grid>

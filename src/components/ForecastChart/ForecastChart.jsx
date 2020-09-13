@@ -11,9 +11,9 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-const ForecastChart = ({ data }) => {
+const ForecastChart = ({ data, width }) => {
   return (
-    <ResponsiveContainer height={250} width={'95%'}>
+    <ResponsiveContainer height={250} width={width ? width : '95%'}>
       <LineChart
         margin={{ top: 20, bottom: 20, left: 5, right: 5 }}
         data={data}

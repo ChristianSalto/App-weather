@@ -1,6 +1,6 @@
 import React from 'react';
 import ForecastChart from './ForecastChart';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 const data = [
   {
@@ -36,10 +36,8 @@ const data = [
 ];
 
 test('ForecastChart render', async () => {
-  const { getByText } = render(<ForecastChart data={data} />);
-  screen.debug();
-
-  const weekDay = await getByText('Sab 1', { level: 2 });
-  console.log(weekDay);
-  // expect(weekDay).toBeInTheDocument();
+  const { getByText } = render(<ForecastChart data={data} width={700} />);
+  const text = 'Sab 1';
+  const weekDay = await getByText(text);
+  expect(weekDay).toBeInTheDocument();
 });
