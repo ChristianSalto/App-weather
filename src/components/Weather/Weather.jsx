@@ -7,23 +7,21 @@ import IconState, { validValues } from './../IconState';
 
 const Weather = ({ temperature, state }) => {
   return (
-    <div>
-      <Grid
-        container
-        item
-        direction="row"
-        justify="center"
-        alignItems="center"
-        spacing={1}
-      >
-        <IconContext.Provider value={{ size: '5em' }}>
-          <IconState state={state} />
-        </IconContext.Provider>
-        <Typography display="inline" variant="h2">
-          {temperature}
-        </Typography>
-      </Grid>
-    </div>
+    <Grid
+      container
+      item
+      direction="row"
+      justify="center"
+      alignItems="center"
+      spacing={1}
+    >
+      <IconContext.Provider value={{ size: '5em' }}>
+        <IconState state={state} />
+      </IconContext.Provider>
+      <Typography display="inline" variant="h2">
+        {temperature}
+      </Typography>
+    </Grid>
   );
 };
 

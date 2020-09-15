@@ -16,7 +16,7 @@ test('CityList renders', async () => {
     <CityList cities={cities} onClickCity={jest.fn()} />
   );
 
-  const items = await findAllByRole('listitem');
+  const items = await findAllByRole('button');
 
   expect(items).toHaveLength(4);
 });
@@ -32,7 +32,7 @@ test('CityList click on item', async () => {
     <CityList cities={cities} onClickCity={fnClickOnItem} />
   );
 
-  const items = await findAllByRole('listitem');
+  const items = await findAllByRole('button');
 
   // Ahora, para simular la accion, vamos a utilizar fireEvent
   // fireEvent es parte de la libreria testing-library/react

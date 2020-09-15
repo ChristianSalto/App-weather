@@ -1,5 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { Paper } from '@material-ui/core';
+import AppFrame from './../components/AppFrame';
 import CityList from './../components/CityList';
 
 const cities = [
@@ -18,10 +20,11 @@ const MainPage = () => {
   };
 
   return (
-    <div>
-      <h2>Lista de ciudades</h2>
-      <CityList cities={cities} onClickCity={onClickHandler} />
-    </div>
+    <AppFrame>
+      <Paper elevation={4}>
+        <CityList cities={cities} onClickCity={onClickHandler} />
+      </Paper>
+    </AppFrame>
   );
 };
 
