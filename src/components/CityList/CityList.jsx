@@ -39,7 +39,7 @@ const CityList = ({ cities, onClickCity }) => {
 
   useEffect(() => {
     const setWeather = (city) => {
-      const API_KEY = '18d95e96e88b346c5cc77c39ae4759f7';
+      const API_KEY = '';
       const URL = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`;
       axios.get(URL).then((response) => {
         const { data } = response;
