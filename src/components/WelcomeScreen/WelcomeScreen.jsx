@@ -1,5 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import Clouds from 'vanta/dist/vanta.clouds.min';
+import * as THREE from 'three';
 
 const WelcomeScreen = ({ children }) => {
   // El useRef nos sirve para tomar una referencia del DOM
@@ -20,14 +22,33 @@ const WelcomeScreen = ({ children }) => {
     // vanta === 0, es igual a "vanta == false"
     if (!vanta) {
       // SOLO PASA UNA VEZ
-      setVanta(1); // vanta = 1
+      // Aqui vamos hacer la inicializacion de "vanta"
+      // Activo el efecto "clouds"
+      setVanta(
+        Clouds({
+          THREE,
+          el: myRefDiv.current,
+        })
+      ); // vanta != 0; es diferente de falso
+
       console.log('Establezco vanta a un valor diferente de 0');
     }
-  });
+    // Al salir de la pantalla debemos detener el efecto
+    // y des-asociar todos los recursos (div + vanta effect)
+    return () => {
+      // Dentro de esta funcion se va a realizar la tarea
+      // de destruir los recursos tomados por "vanta"
+      if (vanta) {
+        vanta.destroy();
+        console.log('Libero los recursos al desmontar el componente');
+      }
+    };
+  }, [vanta]); // Con esto me aseguro que siga funcionando
+  // correctamente si tuviera mas variables "use"
 
   return (
-    <div ref={myRefDiv}>
-      <h4>WelcomeScreen</h4>
+    <div className="full" ref={myRefDiv}>
+      {children}
     </div>
   );
 };
