@@ -3,17 +3,17 @@ import { render, fireEvent } from '@testing-library/react';
 import CityList from './CityList';
 
 const cities = [
-  { city: 'Madrid', country: 'España' },
-  { city: 'Berlin', country: 'Bruselas' },
-  { city: 'Paris', country: 'Francia' },
-  { city: 'Londres', country: 'Inglaterra' },
+  { city: 'Madrid', country: 'España', countryCode: 'ES' },
+  { city: 'Berlin', country: 'Alemania', countryCode: 'DE' },
+  { city: 'Bruselas', country: 'Belgica', countryCode: 'BE' },
+  { city: 'Paris', country: 'Francia', countryCode: 'FR' },
 ];
 
 test('CityList renders', async () => {
   // AAA Arrange Act Assert
 
   const { findAllByRole } = render(
-    <CityList cities={cities} onClickCity={jest.fn()} />
+    <CityList cities={cities} onClickCity={() => {}} />
   );
 
   const items = await findAllByRole('button');

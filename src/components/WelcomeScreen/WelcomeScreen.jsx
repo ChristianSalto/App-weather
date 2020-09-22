@@ -10,14 +10,11 @@ const WelcomeScreen = ({ children }) => {
 
   // En la primera renderizacion "myRefDiv.current" es igual
   // a "nulo", el valor inicial
-  console.log('myRefDiv.current', myRefDiv.current);
 
   // La funcion de useEffect se va "invocar" ante
   // la segunda renderizacion, en ese punto ya va a
   // contener un valor "myRefDiv.current"
   useEffect(() => {
-    console.log('myRefDiv.current (en useEffect)', myRefDiv.current);
-
     // solo pasa una vez dentro del if
     // vanta === 0, es igual a "vanta == false"
     if (!vanta) {
@@ -30,8 +27,6 @@ const WelcomeScreen = ({ children }) => {
           el: myRefDiv.current,
         })
       ); // vanta != 0; es diferente de falso
-
-      console.log('Establezco vanta a un valor diferente de 0');
     }
     // Al salir de la pantalla debemos detener el efecto
     // y des-asociar todos los recursos (div + vanta effect)
@@ -40,7 +35,6 @@ const WelcomeScreen = ({ children }) => {
       // de destruir los recursos tomados por "vanta"
       if (vanta) {
         vanta.destroy();
-        console.log('Libero los recursos al desmontar el componente');
       }
     };
   }, [vanta]); // Con esto me aseguro que siga funcionando

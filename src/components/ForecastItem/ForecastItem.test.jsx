@@ -4,7 +4,7 @@ import { render } from '@testing-library/react';
 
 test('ForecastItem render', async () => {
   const { getAllByText } = render(
-    <ForecastItem weekDay="lunes" hour={2} state="sunny" temperature={40} />
+    <ForecastItem weekDay="lunes" hour={2} state="clear" temperature={40} />
   );
 
   const week = await getAllByText('lunes');
