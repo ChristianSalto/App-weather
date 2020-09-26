@@ -5,21 +5,20 @@ class ErrorBoundary extends Component {
     super();
 
     this.state = {
-      activo: false,
+      hasError: false,
     };
   }
 
-  setActivo = () => {
-    return this.state.activo ? ' Activo' : ' No Activo';
-  };
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.log('ErrorInfo', errorInfo);
+  }
 
   render() {
-    return (
-      <h1>
-        ErrorBoundary {this.props.saludo}
-        {this.setActivo()}
-      </h1>
-    );
+    return this.state.hasError ? <h1>Hubo un error</h1> : this.props.children;
   }
 }
 

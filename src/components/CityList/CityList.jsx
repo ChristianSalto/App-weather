@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
-import convertUnits from 'convert-units';
+import { Alert } from '@material-ui/lab';
 import { Grid, List, ListItem } from '@material-ui/core';
+import useCityList from './../../hooks/useCityList';
 import CityInfo from './../CityInfo';
 import Weather from './../Weather';
-import { Alert } from '@material-ui/lab';
+import { getCityCode } from './../../utils/utils';
 
-const getCityCode = (city, countryCode) => `${city}-${countryCode}`;
 // li: es un item (segun tag html, tiene el role "listitem")
 // renderCityAndCountry se va a convertir en una funcion que retorna otra funcion
 const renderCityAndCountry = (eventOnClickCity) => (
@@ -21,7 +20,7 @@ const renderCityAndCountry = (eventOnClickCity) => (
     <ListItem
       button
       key={getCityCode(city, countryCode)}
-      onClick={eventOnClickCity}
+      onClick={() => eventOnClickCity(city, countryCode)}
     >
       <Grid container justify="center" alignItems="center">
         <Grid item md={9} xs={12}>
@@ -41,83 +40,7 @@ const renderCityAndCountry = (eventOnClickCity) => (
 // cities: es un array, y en cada item tiene que tenerla ciudad, pero ademas el country
 // ul: tag html para listas no ordenadas
 const CityList = ({ cities, onClickCity }) => {
-  const [allWeather, setAllWeather] = useState({});
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const setWeather = async (city, countryCode) => {
-      const API_KEY = process.env.REACT_APP_API_KEY;
-      const URL = `http://api.openweathermap.org/data/2.5/weather?q=${city},${countryCode}&appid=${API_KEY}`;
-
-      // Version async/await
-
-      try {
-        const response = await axios.get(URL);
-        const { data } = response;
-        const temperature = Number(
-          convertUnits(data.main.temp).from('K').to('C').toFixed(0)
-        );
-        const state = data.weather[0].main.toLowerCase();
-
-        const propName = getCityCode(city, countryCode);
-        const propValue = { temperature, state };
-
-        setAllWeather((allWeather) => ({
-          ...allWeather,
-          [propName]: propValue,
-        }));
-      } catch (error) {
-        if (error.response) {
-          // errores que nos responde el servidor
-          setError('Ha ocurrido un error en el servidor del clima');
-        } else if (error.request) {
-          // errores que suceden por no llegar al servidor
-          setError('Verifique la conexion a internet');
-        } else {
-          // Errores imprevistos
-          setError('Error al cargar los datos');
-        }
-      }
-
-      // Version Promise
-
-      /* axios
-        .get(URL)
-        .then((response) => {
-          const { data } = response;
-          const temperature = Number(
-            convertUnits(data.main.temp).from('K').to('C').toFixed(0)
-          );
-          const state = data.weather[0].main.toLowerCase();
-
-          const propName = `${city}-${country}`;
-          const propValue = { temperature, state };
-
-          setAllWeather((allWeather) => ({
-            ...allWeather,
-            [propName]: propValue,
-          }));
-        })
-        .catch((error) => {
-          if (error.response) {
-            // errores que nos responde el servidor
-            setError('Ha ocurrido un error en el servidor del clima');
-          } else if (error.request) {
-            // errores que suceden por no llegar al servidor
-            setError('Verifique la conexion a internet');
-          } else {
-            // Errores imprevistos
-            setError('Error al cargar los datos');
-          }
-        }); */
-    };
-
-    cities.forEach(({ city, countryCode }) => {
-      setWeather(city, countryCode);
-    });
-  }, [cities]);
-
-  //const weather = { temperature: 11, state: 'sunny' };
+  const { allWeather, error, setError } = useCityList(cities);
 
   return (
     <div>
