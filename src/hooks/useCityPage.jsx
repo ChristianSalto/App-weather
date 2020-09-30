@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import moment from 'moment';
-import 'moment/locale/es';
 import { useParams } from 'react-router-dom';
 import { getForecastUrl } from './../utils/urls';
-import { toCelsius } from './../utils/utils';
+import getChartData from './../utils/transform/getChartData';
+import getForecastItemList from './../utils/transform/getForecastItemList';
 
 const useCityPage = () => {
   const [chartData, setChartData] = useState(null);
@@ -18,40 +17,10 @@ const useCityPage = () => {
       try {
         const { data } = await axios.get(URL);
 
-        const daysAhead = [0, 1, 2, 3, 4, 5];
-        const days = daysAhead.map((d) => moment().add(d, 'd'));
-        const dataAux = days
-          .map((day) => {
-            const tempObjArray = data.list.filter((item) => {
-              const dayOfYear = moment.unix(item.dt).dayOfYear();
-              return dayOfYear === day.dayOfYear();
-            });
-
-            const temps = tempObjArray.map((item) => item.main.temp);
-
-            return {
-              dayHour: day.format('ddd'),
-              min: toCelsius(Math.min(...temps)),
-              max: toCelsius(Math.max(...temps)),
-              hasTemps: temps.length > 0 ? true : false, // Aqui lo que hacemos es controlar que no nos llegue un array vacio
-            };
-          })
-          .filter((item) => item.hasTemps);
-
+        const dataAux = getChartData(data);
         setChartData(dataAux);
 
-        const interval = [4, 8, 12, 16, 20, 24];
-        const forecastItemListAux = data.list
-          .filter((item, index) => interval.includes(index))
-          .map((item) => {
-            return {
-              hour: moment.unix(item.dt).hour(),
-              weekDay: moment.unix(item.dt).format('dddd'),
-              state: item.weather[0].main.toLowerCase(),
-              temperature: toCelsius(item.main.temp),
-            };
-          });
-
+        const forecastItemListAux = getForecastItemList(data);
         setForecastItemList(forecastItemListAux);
       } catch (error) {
         console.log(error);
@@ -60,7 +29,7 @@ const useCityPage = () => {
     getForecast();
   }, [city, countryCode]);
 
-  return { city, chartData, forecastItemList };
+  return { city, countryCode, chartData, forecastItemList };
 };
 
 export default useCityPage;

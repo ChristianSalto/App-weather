@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { getCityCode, toCelsius } from './../utils/utils';
 import { getWeatherUrl } from './../utils/urls';
+import getAllWeather from './../utils/transform/getAllWeather';
+import { getCityCode } from './../utils/utils';
 
 // Hook personalizado
-const useCityList = (cities) => {
-  const [allWeather, setAllWeather] = useState({});
+const useCityList = (cities, allWeather, onSetAllWeather) => {
+  // const [allWeather, setAllWeather] = useState({});
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -16,17 +17,15 @@ const useCityList = (cities) => {
 
       try {
         const response = await axios.get(URL);
-        const { data } = response;
-        const temperature = toCelsius(data.main.temp);
-        const state = data.weather[0].main.toLowerCase();
 
-        const propName = getCityCode(city, countryCode);
-        const propValue = { temperature, state };
+        const allWeatherAux = getAllWeather(response, city, countryCode);
 
-        setAllWeather((allWeather) => ({
-          ...allWeather,
-          [propName]: propValue,
-        }));
+        // setAllWeather((allWeather) => ({
+        //   ...allWeather,
+        //   ...allWeatherAux,
+        // }));
+
+        onSetAllWeather(allWeatherAux);
       } catch (error) {
         if (error.response) {
           // errores que nos responde el servidor
@@ -74,11 +73,13 @@ const useCityList = (cities) => {
     };
 
     cities.forEach(({ city, countryCode }) => {
-      setWeather(city, countryCode);
+      if (!allWeather[getCityCode(city, countryCode)]) {
+        setWeather(city, countryCode);
+      }
     });
-  }, [cities]);
+  }, [cities, onSetAllWeather, allWeather]);
 
-  return { allWeather, error, setError };
+  return { error, setError };
 };
 
 export default useCityList;
