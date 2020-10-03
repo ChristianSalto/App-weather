@@ -16,6 +16,10 @@ const useCityList = (cities, allWeather, onSetAllWeather) => {
       // Version async/await
 
       try {
+        const propName = getCityCode(city, countryCode);
+
+        onSetAllWeather({ [propName]: {} });
+
         const response = await axios.get(URL);
 
         const allWeatherAux = getAllWeather(response, city, countryCode);
