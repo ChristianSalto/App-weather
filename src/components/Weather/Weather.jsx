@@ -6,6 +6,7 @@ import { IconContext } from 'react-icons';
 import IconState, { validValues } from './../IconState';
 
 const Weather = ({ temperature, state }) => {
+  console.log(temperature, state);
   return (
     <Grid
       container

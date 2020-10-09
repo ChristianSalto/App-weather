@@ -12,20 +12,19 @@ import { getCityCode } from './../utils/utils';
 import { getCountryNameByCountryCode } from './../utils/serviceCities';
 
 const CityPage = ({ data, actions }) => {
-  const { onSetAllWeather, onSetChartData, onSetForecastItemList } = actions;
+  // const { onSetAllWeather, onSetChartData, onSetForecastItemList } = actions;
   const { allWeather, allChartData, allForecastItemList } = data;
   const { city, countryCode } = useCityPage(
     allChartData,
     allForecastItemList,
-    onSetChartData,
-    onSetForecastItemList
+    actions
   );
 
   // Podremos crear instancias y memorizar el valor con lo que solo se creara
   // una instancia nueva cuando alguno de los valores cambie
   const cities = useMemo(() => [{ city, countryCode }], [city, countryCode]);
 
-  useCityList(cities, allWeather, onSetAllWeather);
+  useCityList(cities, allWeather, actions);
 
   const cityCode = getCityCode(city, countryCode);
 

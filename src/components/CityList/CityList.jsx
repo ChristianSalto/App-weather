@@ -15,6 +15,8 @@ const renderCityAndCountry = (eventOnClickCity) => (
 ) => {
   const { city, countryCode, country } = cityAndCountry;
   //const { temperature, state } = weather;
+  // const p = getCityCode(city, countryCode);
+  // console.log(weather && weather[p] && weather[p].temperature);
 
   return (
     <ListItem
@@ -40,9 +42,8 @@ const renderCityAndCountry = (eventOnClickCity) => (
 // cities: es un array, y en cada item tiene que tenerla ciudad, pero ademas el country
 // ul: tag html para listas no ordenadas
 const CityList = ({ cities, onClickCity, actions, data }) => {
-  const { onSetAllWeather } = actions;
   const { allWeather } = data;
-  const { error, setError } = useCityList(cities, allWeather, onSetAllWeather);
+  const { error, setError } = useCityList(cities, allWeather, actions);
 
   return (
     <div>

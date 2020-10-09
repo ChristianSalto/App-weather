@@ -5,7 +5,7 @@ import getAllWeather from './../utils/transform/getAllWeather';
 import { getCityCode } from './../utils/utils';
 
 // Hook personalizado
-const useCityList = (cities, allWeather, onSetAllWeather) => {
+const useCityList = (cities, allWeather, actions) => {
   // const [allWeather, setAllWeather] = useState({});
   const [error, setError] = useState(null);
 
@@ -18,18 +18,24 @@ const useCityList = (cities, allWeather, onSetAllWeather) => {
       try {
         const propName = getCityCode(city, countryCode);
 
-        onSetAllWeather({ [propName]: {} });
+        // onSetAllWeather({ [propName]: {} });
+        actions({ type: 'SET_ALL_WEATHER', payload: { [propName]: {} } });
 
         const response = await axios.get(URL);
 
         const allWeatherAux = getAllWeather(response, city, countryCode);
+        //console.log(allWeatherAux);
 
         // setAllWeather((allWeather) => ({
         //   ...allWeather,
         //   ...allWeatherAux,
         // }));
 
-        onSetAllWeather(allWeatherAux);
+        //onSetAllWeather(allWeatherAux);
+        actions({
+          type: 'SET_ALL_WEATHER',
+          payload: allWeatherAux,
+        });
       } catch (error) {
         if (error.response) {
           // errores que nos responde el servidor
@@ -81,7 +87,7 @@ const useCityList = (cities, allWeather, onSetAllWeather) => {
         setWeather(city, countryCode);
       }
     });
-  }, [cities, onSetAllWeather, allWeather]);
+  }, [cities, actions, allWeather]);
 
   return { error, setError };
 };
