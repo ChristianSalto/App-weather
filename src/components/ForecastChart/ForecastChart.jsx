@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
   LineChart,
@@ -12,12 +12,13 @@ import {
 } from 'recharts';
 
 const ForecastChart = ({ data, width }) => {
+  const marginSize = useMemo(
+    () => ({ top: 20, bottom: 20, left: 5, right: 5 }),
+    []
+  );
   return (
     <ResponsiveContainer height={250} width={width ? width : '95%'}>
-      <LineChart
-        margin={{ top: 20, bottom: 20, left: 5, right: 5 }}
-        data={data}
-      >
+      <LineChart margin={marginSize} data={data}>
         <XAxis dataKey="dayHour"></XAxis>
         <YAxis></YAxis>
         <CartesianGrid></CartesianGrid>

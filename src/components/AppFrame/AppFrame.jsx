@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
   AppBar,
@@ -13,6 +13,7 @@ import { IconContext } from 'react-icons';
 import { WiDaySunny } from 'react-icons/wi';
 
 const AppFrame = ({ children }) => {
+  const iconContextSize = useMemo(() => ({ size: '2em' }), []);
   return (
     <Grid container justify="center">
       <AppBar position="static">
@@ -24,7 +25,7 @@ const AppFrame = ({ children }) => {
               color="inherit"
               aria-label="menu"
             >
-              <IconContext.Provider value={{ size: '2em' }}>
+              <IconContext.Provider value={iconContextSize}>
                 <WiDaySunny />
               </IconContext.Provider>
             </Link>

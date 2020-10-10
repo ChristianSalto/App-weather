@@ -7,23 +7,32 @@ import CityInfo from './../CityInfo';
 import Weather from './../Weather';
 import { getCityCode } from './../../utils/utils';
 
-// li: es un item (segun tag html, tiene el role "listitem")
-// renderCityAndCountry se va a convertir en una funcion que retorna otra funcion
-const renderCityAndCountry = (eventOnClickCity) => (
-  cityAndCountry,
-  weather
-) => {
-  const { city, countryCode, country } = cityAndCountry;
-  //const { temperature, state } = weather;
-  // const p = getCityCode(city, countryCode);
-  // console.log(weather && weather[p] && weather[p].temperature);
+// funcion que nos sirve para debuggear y ver los estados previos y siguiente haciendo una
+// comparacion de ambas y  devolviendonos un boolean en funcion de la comparacion
 
+// const areEqual = (prev, next) => {
+//   debugger;
+//   console.log('city', prev.city === next.city);
+//   console.log('countryCode', prev.countryCode === next.countryCode);
+//   console.log('country', prev.country === next.country);
+//   console.log('weather', prev.weather === next.weather);
+//   console.log(
+//     'eventOnClickCity',
+//     prev.eventOnClickCity === next.eventOnClickCity
+//   );
+
+//   return false;
+// };
+
+const CityListItem = React.memo(function CityListItem({
+  city,
+  countryCode,
+  country,
+  weather,
+  eventOnClickCity,
+}) {
   return (
-    <ListItem
-      button
-      key={getCityCode(city, countryCode)}
-      onClick={() => eventOnClickCity(city, countryCode)}
-    >
+    <ListItem button onClick={() => eventOnClickCity(city, countryCode)}>
       <Grid container justify="center" alignItems="center">
         <Grid item md={9} xs={12}>
           <CityInfo city={city} country={country} />
@@ -36,6 +45,25 @@ const renderCityAndCountry = (eventOnClickCity) => (
         </Grid>
       </Grid>
     </ListItem>
+  );
+});
+
+// li: es un item (segun tag html, tiene el role "listitem")
+// renderCityAndCountry se va a convertir en una funcion que retorna otra funcion
+const renderCityAndCountry = (eventOnClickCity) => (
+  cityAndCountry,
+  weather
+) => {
+  const { city, countryCode } = cityAndCountry;
+  return (
+    <CityListItem
+      key={getCityCode(city, countryCode)}
+      eventOnClickCity={eventOnClickCity}
+      weather={weather}
+      {...cityAndCountry} // Esto me permite cojer las propiedades de un objeto y pasarselas de forma directa
+      // el inconveniente de esto es que si alguna de las propiedades no la necesitaramos
+      // y esa misma sufre un cambio de estado, sufririamos una re-renderizacion del componente inecesaria
+    />
   );
 };
 
@@ -77,4 +105,4 @@ CityList.propTypes = {
   onClickCity: PropTypes.func.isRequired,
 };
 
-export default CityList;
+export default React.memo(CityList);
