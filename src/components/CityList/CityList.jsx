@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Alert } from '@material-ui/lab';
 import { Grid, List, ListItem } from '@material-ui/core';
@@ -7,8 +7,8 @@ import CityInfo from './../CityInfo';
 import Weather from './../Weather';
 import { getCityCode } from './../../utils/utils';
 import {
-  WeatherStateContext,
-  WeatherDispatchContext,
+  useWeatherStateContext,
+  useWeatherDispatchContext,
 } from '../../WeatherContext';
 
 // funcion que nos sirve para debuggear y ver los estados previos y siguiente haciendo una
@@ -74,8 +74,8 @@ const renderCityAndCountry = (eventOnClickCity) => (
 // cities: es un array, y en cada item tiene que tenerla ciudad, pero ademas el country
 // ul: tag html para listas no ordenadas
 const CityList = ({ cities, onClickCity }) => {
-  const actions = useContext(WeatherDispatchContext);
-  const data = useContext(WeatherStateContext);
+  const actions = useWeatherDispatchContext();
+  const data = useWeatherStateContext();
   const { allWeather } = data;
   const { error, setError } = useCityList(cities, allWeather, actions);
 
